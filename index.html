@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>자기야, 선물 왔어 💜</title>
+<meta property="og:title" content="자기야, 선물 왔어 💜">
+<meta property="og:description" content="눌러서 열어봐!">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  color:#3b2466;
+  background:radial-gradient(circle at 50% 20%,#faf5ff 0,#ece0ff 60%,#dccbff 100%);
+  overflow:hidden;touch-action:manipulation;
+  user-select:none;-webkit-user-select:none;
+}
+main{position:relative;height:100vh;height:100dvh}
+.scene{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;
+  padding:28px;text-align:center;
+}
+.scene.on{display:flex;animation:fade .6s ease both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+h1{font-size:clamp(23px,6.6vw,32px);line-height:1.35;font-weight:800;word-break:keep-all}
+.small{font-size:15px;color:#7a52c7;font-weight:700;word-break:keep-all}
+.hint{font-size:15px;color:#8a76b3;min-height:22px}
+
+/* 선물 상자 */
+.box{
+  position:relative;width:170px;height:150px;border:0;background:none;
+  cursor:pointer;margin-top:30px;animation:wiggle 1.8s ease-in-out infinite;
+}
+.box .body{
+  position:absolute;left:10px;right:10px;bottom:0;height:110px;border-radius:10px;
+  background:#7c4ddb;color:#fff;font-size:30px;font-weight:800;letter-spacing:.05em;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 -12px 0 rgba(0,0,0,.08),0 14px 24px rgba(124,77,219,.3);
+}
+.box .lid{
+  position:absolute;left:0;right:0;top:14px;height:36px;border-radius:10px;
+  background:#9a6ff0;z-index:2;
+  transition:transform .7s cubic-bezier(.3,1.4,.5,1),opacity .7s;
+}
+.box .lid::after{
+  content:"💜";position:absolute;left:50%;top:-28px;
+  transform:translateX(-50%);font-size:36px;
+}
+.box.open{animation:none}
+.box.open .lid{transform:translate(60px,-140px) rotate(35deg);opacity:0}
+@keyframes wiggle{
+  0%,60%,100%{transform:rotate(0)}
+  70%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}90%{transform:rotate(-3deg)}
+}
+
+/* 빼빼로 */
+.sticks{position:relative;width:200px;height:155px}
+.stick{
+  position:absolute;left:50%;bottom:0;width:14px;height:145px;margin-left:-7px;
+  border-radius:7px;transform-origin:50% 100%;transform:rotate(var(--r));
+  background:linear-gradient(to bottom,var(--c) 0 70%,#e9b872 70% 100%);
+  box-shadow:inset -3px 0 0 rgba(0,0,0,.12);
+  animation:pop .7s cubic-bezier(.3,1.5,.5,1) both;animation-delay:var(--d);
+}
+@keyframes pop{
+  from{transform:rotate(0) scaleY(0);opacity:0}
+  to{transform:rotate(var(--r)) scaleY(1);opacity:1}
+}
+
+/* 버튼 */
+.btns{display:flex;gap:14px;align-items:center;justify-content:center;min-height:64px}
+button.b{
+  border:0;border-radius:999px;padding:14px 26px;
+  font:inherit;font-size:18px;font-weight:800;cursor:pointer;
+}
+#yes{
+  background:#8b5cf6;color:#fff;box-shadow:0 8px 0 #6a3fd1;
+  transform:scale(var(--s,1));transition:transform .25s;
+}
+#no{
+  position:relative;z-index:10;
+  background:#fff;color:#8a76b3;box-shadow:0 6px 0 #d3c2f5;
+  transition:transform .55s cubic-bezier(.22,1,.36,1);
+}
+#no .lb{display:inline-block}
+#no.run .lb{animation:scurry .5s ease}
+@keyframes scurry{
+  0%{transform:rotate(0)}20%{transform:rotate(-14deg)}40%{transform:rotate(12deg)}
+  60%{transform:rotate(-8deg)}80%{transform:rotate(5deg)}100%{transform:rotate(0)}
+}
+.ghost{
+  position:fixed;z-index:9;border-radius:999px;background:#fff;color:#8a76b3;
+  font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;animation:ghost .4s ease-out forwards;
+}
+@keyframes ghost{from{opacity:.5}to{opacity:0}}
+.puff{
+  position:fixed;font-size:26px;pointer-events:none;z-index:9;
+  animation:puff .6s ease-out forwards;
+}
+@keyframes puff{
+  from{opacity:1;transform:scale(.6)}
+  to{opacity:0;transform:scale(1.6) translateY(-10px)}
+}
+#more{background:#fff;color:#7c3aed;box-shadow:0 6px 0 #d3c2f5}
+#again{
+  border:0;background:none;color:#8a76b3;font:inherit;font-size:13px;
+  cursor:pointer;padding:4px 8px;text-decoration:underline;
+}
+
+/* 소주병 */
+.sj{
+  position:relative;display:block;width:1em;height:2.2em;margin-top:1.05em;
+  border-radius:.22em;
+  background:linear-gradient(to bottom,#3fae6a 0 32%,#fff 32% 66%,#3fae6a 66%);
+}
+.sj::before{
+  content:"";position:absolute;left:.3em;top:-.9em;width:.4em;height:1em;
+  background:#3fae6a;border-radius:.12em .12em 0 0;
+}
+.sj::after{
+  content:"";position:absolute;left:.25em;top:-1.05em;width:.5em;height:.28em;
+  background:#8b5cf6;border-radius:.1em;
+}
+.hero{display:flex;gap:14px;align-items:flex-end;font-size:26px}
+.hero .sj:first-child{transform:rotate(-12deg)}
+.hero .sj:last-child{transform:rotate(12deg)}
+.hero.clink .sj:first-child{animation:clinkL .5s ease}
+.hero.clink .sj:last-child{animation:clinkR .5s ease}
+@keyframes clinkL{0%,100%{transform:rotate(-12deg)}45%{transform:translateX(7px) rotate(10deg)}}
+@keyframes clinkR{0%,100%{transform:rotate(12deg)}45%{transform:translateX(-7px) rotate(-10deg)}}
+
+/* 편지 */
+.letter{
+  background:#fff;border-radius:22px;padding:24px 20px;max-width:340px;
+  box-shadow:0 14px 30px rgba(124,77,219,.18);
+  display:flex;flex-direction:column;gap:10px;
+  font-size:16px;line-height:1.6;word-break:keep-all;
+}
+.letter .big{font-size:21px;font-weight:800;color:#7c3aed;margin-top:6px}
+.letter .sign{font-size:14px;color:#8a76b3;text-align:right}
+
+/* 떨어지는 것들 */
+#fall{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+#fall span{position:absolute;top:-70px;animation:drop linear forwards}
+#fall .pk{
+  width:9px;height:52px;border-radius:5px;
+  background:linear-gradient(to bottom,var(--c) 0 70%,#e9b872 70% 100%);
+}
+@keyframes drop{
+  from{transform:translateY(0) rotate(var(--a,0deg))}
+  to{transform:translateY(120vh) rotate(calc(var(--a,0deg) + 360deg))}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div id="fall"></div>
+
+<main>
+  <!-- 1. 선물 상자 -->
+  <section id="s1" class="scene on">
+    <p class="small">11월 11일 · 자기에게</p>
+    <h1>자기야, 선물 왔어!</h1>
+    <button id="box" class="box" aria-label="선물 열기">
+      <span class="lid"></span>
+      <span class="body">11.11</span>
+    </button>
+    <p class="hint">상자를 콕 눌러봐 👆</p>
+  </section>
+
+  <!-- 2. 장난 질문 -->
+  <section id="s2" class="scene">
+    <div class="sticks">
+      <div class="stick" style="--r:-32deg;--c:#b693f5;--d:.05s"></div>
+      <div class="stick" style="--r:-16deg;--c:#4a2a1a;--d:.15s"></div>
+      <div class="stick" style="--r:0deg;--c:#fff;--d:.25s"></div>
+      <div class="stick" style="--r:16deg;--c:#4a2a1a;--d:.35s"></div>
+      <div class="stick" style="--r:32deg;--c:#b693f5;--d:.45s"></div>
+    </div>
+    <p class="small">빼빼로는 전부 자기 거!<br>나 단 거 못 먹는 거 알지? 😝</p>
+    <h1>대신 나랑 맛있는 안주에<br>소주 한잔할래?</h1>
+    <div class="btns">
+      <button id="yes" class="b">응! 짠 💜</button>
+      <button id="no" class="b"><span class="lb">싫어</span></button>
+    </div>
+    <p id="tease" class="hint"></p>
+  </section>
+
+  <!-- 3. 편지 -->
+  <section id="s3" class="scene">
+    <div class="hero" id="hero"><span class="sj"></span><span class="sj"></span></div>
+    <h1>그럴 줄 알았어 😆</h1>
+    <div class="letter">
+      <p>오늘 얼굴 보고 못 줘서 아쉬워.</p>
+      <p>단 건 자기가 다 먹고,<br>소주랑 안주는 나랑 같이 먹자 🍗</p>
+      <p>다음에 만나면 첫 잔은 내가 따라줄게.</p>
+      <p class="big">자기야, 앞으로도 잘 부탁해 💜</p>
+      <p class="sign">— 단 건 싫어해도 자기는 좋아하는 사람이</p>
+    </div>
+    <button id="more" class="b">한 잔 더! 짠 💜</button>
+    <button id="again">처음부터 다시 보기</button>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function show(n){
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('on'));
+  $('s' + n).classList.add('on');
+}
+
+/* 떨어지는 빼빼로 + 하트 + 소주 + 안주 */
+const emojis = ['💜','💜','🤍','💕','🍗','🥩','🍲','🍜','🥟','🍢'];
+const coats = ['#4a2a1a','#6b3f26','#9a6ff0'];
+function drop(){
+  if (reduce) return;
+  const e = document.createElement('span');
+  const k = Math.random();
+  if (k < 0.28){
+    e.className = 'pk';
+    e.style.setProperty('--c', coats[Math.floor(Math.random() * coats.length)]);
+  } else if (k < 0.5){
+    e.className = 'sj';
+    e.style.fontSize = (15 + Math.random() * 8) + 'px';
+  } else {
+    e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    e.style.fontSize = (18 + Math.random() * 20) + 'px';
+  }
+  e.style.setProperty('--a', Math.floor(Math.random() * 360) + 'deg');
+  e.style.left = Math.random() * 94 + 'vw';
+  e.style.animationDuration = (3 + Math.random() * 3) + 's';
+  e.addEventListener('animationend', () => e.remove());
+  $('fall').appendChild(e);
+}
+function burst(n){ for (let i = 0; i < n; i++) setTimeout(drop, i * 60); }
+
+/* 상자 열기 */
+$('box').addEventListener('click', () => {
+  if ($('box').classList.contains('open')) return;
+  $('box').classList.add('open');
+  burst(14);
+  setTimeout(() => show(2), 800);
+});
+
+/* 도망가는 "싫어" 버튼 */
+const teases = [
+  '어? 손이 미끄러졌나 봐 😏',
+  '안주는 자기가 고르게 해줄게 🍗',
+  '첫 잔은 내가 따라줄게 💜',
+  '못 잡을걸~ 🏃',
+  '이쯤 되면 "응" 누를 때 됐다 💕'
+];
+const no = $('no');
+let tries = 0, base = null, trail = null;
+
+function ghost(){
+  const g = no.getBoundingClientRect();
+  const c = document.createElement('span');
+  c.className = 'ghost';
+  c.textContent = '싫어';
+  c.style.left = g.left + 'px';
+  c.style.top = g.top + 'px';
+  c.style.width = g.width + 'px';
+  c.style.height = g.height + 'px';
+  c.addEventListener('animationend', () => c.remove());
+  document.body.appendChild(c);
+}
+
+function runAway(ev){
+  ev.preventDefault();
+  const r = no.getBoundingClientRect();
+  if (!base) base = { x: r.left, y: r.top };
+  const w = no.offsetWidth, h = no.offsetHeight;
+
+  const p = document.createElement('span');
+  p.className = 'puff';
+  p.textContent = '💨';
+  p.style.left = (r.left + w / 2 - 13) + 'px';
+  p.style.top = (r.top + h / 2 - 13) + 'px';
+  p.addEventListener('animationend', () => p.remove());
+  document.body.appendChild(p);
+
+  let x, y, d, k = 0;
+  do {
+    x = 12 + Math.random() * (innerWidth - w - 24);
+    y = 12 + Math.random() * (innerHeight - h - 24);
+    d = Math.hypot(x - r.left, y - r.top);
+    k++;
+  } while ((d < 130 || d > 300) && k < 40);
+  no.style.transform = 'translate(' + (x - base.x) + 'px,' + (y - base.y) + 'px)';
+
+  no.classList.remove('run');
+  void no.offsetWidth;
+  no.classList.add('run');
+
+  if (!reduce){
+    if (trail) clearInterval(trail);
+    let n = 0;
+    trail = setInterval(() => {
+      ghost();
+      if (++n >= 6){ clearInterval(trail); trail = null; }
+    }, 45);
+  }
+
+  $('tease').textContent = teases[tries % teases.length];
+  tries++;
+  $('yes').style.setProperty('--s', Math.min(1 + tries * 0.12, 1.6));
+}
+no.addEventListener('pointerdown', runAway);
+no.addEventListener('click', e => e.preventDefault());
+
+/* "응!" */
+function clink(){
+  const hero = $('hero');
+  hero.classList.remove('clink');
+  void hero.offsetWidth;
+  hero.classList.add('clink');
+}
+$('yes').addEventListener('click', () => {
+  show(3);
+  burst(45);
+  setTimeout(clink, 500);
+  if (!reduce) setInterval(drop, 400);
+});
+$('more').addEventListener('click', () => { clink(); burst(30); });
+$('again').addEventListener('click', () => location.reload());
+</script>
+</body>
+</html>
