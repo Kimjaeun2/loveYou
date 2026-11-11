@@ -102,3 +102,272 @@ button.b{
 }
 @keyframes puff{
   from{opacity:1;transform:scale(.6)}
+  to{opacity:0;transform:scale(1.6) translateY(-10px)}
+}
+#more{background:#fff;color:#7c3aed;box-shadow:0 6px 0 #d3c2f5}
+#again{
+  border:0;background:none;color:#8a76b3;font:inherit;font-size:13px;flex:none;
+  cursor:pointer;padding:4px 8px;text-decoration:underline;
+}
+
+/* 소주병 */
+.sj{
+  position:relative;display:block;width:1em;height:2.2em;margin-top:1.05em;
+  border-radius:.22em;
+  background:linear-gradient(to bottom,#3fae6a 0 32%,#fff 32% 66%,#3fae6a 66%);
+}
+.sj::before{
+  content:"";position:absolute;left:.3em;top:-.9em;width:.4em;height:1em;
+  background:#3fae6a;border-radius:.12em .12em 0 0;
+}
+.sj::after{
+  content:"";position:absolute;left:.25em;top:-1.05em;width:.5em;height:.28em;
+  background:#8b5cf6;border-radius:.1em;
+}
+.hero{display:flex;gap:10px;align-items:flex-end;font-size:26px;flex:none}
+.hero .sj:first-child{transform:rotate(-12deg)}
+.hero .sj:last-child{transform:rotate(12deg)}
+.hero.clink .sj:first-child{animation:clinkL .5s ease}
+.hero.clink .sj:last-child{animation:clinkR .5s ease}
+@keyframes clinkL{0%,100%{transform:rotate(-12deg)}45%{transform:translateX(7px) rotate(10deg)}}
+@keyframes clinkR{0%,100%{transform:rotate(12deg)}45%{transform:translateX(-7px) rotate(-10deg)}}
+
+/* 캐릭터 */
+.me{width:116px;height:auto;flex:none;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.hero.clink .me{animation:hop .5s ease}
+@keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+.me .ht{transform-box:fill-box;transform-origin:50% 60%;animation:beat .9s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+
+/* 편지 */
+#s3{justify-content:flex-start;gap:12px;overflow-y:auto}
+#s3>:first-child{margin-top:auto}
+#s3>:last-child{margin-bottom:auto}
+.letter{
+  background:#fff;border-radius:22px;padding:24px 20px;max-width:340px;flex:none;
+  box-shadow:0 14px 30px rgba(124,77,219,.18);
+  display:flex;flex-direction:column;gap:10px;
+  font-size:16px;line-height:1.6;word-break:keep-all;
+}
+.letter .big{font-size:21px;font-weight:800;color:#7c3aed;margin-top:6px}
+.letter .sign{font-size:14px;color:#8a76b3;text-align:right}
+
+/* 떨어지는 것들 */
+#fall{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+#fall span{position:absolute;top:-70px;animation:drop linear forwards}
+#fall .pk{
+  width:9px;height:52px;border-radius:5px;
+  background:linear-gradient(to bottom,var(--c) 0 70%,#e9b872 70% 100%);
+}
+@keyframes drop{
+  from{transform:translateY(0) rotate(var(--a,0deg))}
+  to{transform:translateY(120vh) rotate(calc(var(--a,0deg) + 360deg))}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div id="fall"></div>
+
+<main>
+  <!-- 1. 선물 상자 -->
+  <section id="s1" class="scene on">
+    <p class="small">11월 11일 · 자기에게</p>
+    <h1>자기야, 선물 왔어!</h1>
+    <button id="box" class="box" aria-label="선물 열기">
+      <span class="lid"></span>
+      <span class="body">11.11</span>
+    </button>
+    <p class="hint">상자를 콕 눌러봐 👆</p>
+  </section>
+
+  <!-- 2. 장난 질문 -->
+  <section id="s2" class="scene">
+    <div class="sticks">
+      <div class="stick" style="--r:-32deg;--c:#b693f5;--d:.05s"></div>
+      <div class="stick" style="--r:-16deg;--c:#4a2a1a;--d:.15s"></div>
+      <div class="stick" style="--r:0deg;--c:#fff;--d:.25s"></div>
+      <div class="stick" style="--r:16deg;--c:#4a2a1a;--d:.35s"></div>
+      <div class="stick" style="--r:32deg;--c:#b693f5;--d:.45s"></div>
+    </div>
+    <p class="small">오늘 빼빼로 못줘서 미안해ㅠㅜ<br>어제줬어야하는뎀.. 😝</p>
+    <h1>대신 나랑 맛있는 안주에<br>소주 한잔할래?</h1>
+    <div class="btns">
+      <button id="yes" class="b">응! 짠 💜</button>
+      <button id="no" class="b"><span class="lb">싫어</span></button>
+    </div>
+    <p id="tease" class="hint"></p>
+  </section>
+
+  <!-- 3. 편지 -->
+  <section id="s3" class="scene">
+    <div class="hero" id="hero">
+      <span class="sj"></span>
+      <svg class="me" viewBox="0 0 140 124" role="img" aria-label="빼빼로와 하트를 든 캐릭터">
+        <g stroke="#221636" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M48 98 L28 82" fill="none"/>
+          <path d="M92 98 L112 82" fill="none"/>
+          <path d="M46 118 V98 q0 -15 24 -15 q24 0 24 15 V118 z" fill="#fcfaff"/>
+          <circle cx="70" cy="56" r="28" fill="#f6d7bd"/>
+          <path d="M40 64 C33 44 40 13 70 13 C100 13 107 44 100 64 C99 58 97 54 94 52 C86 52 78 49 75 43 C73 37 72 31 71 26 C69 31 68 37 65 43 C62 49 54 52 46 52 C43 54 41 58 40 64 Z" fill="#221636"/>
+          <rect x="22" y="40" width="9" height="46" rx="4.5" fill="#e6b673"/>
+          <rect x="22" y="40" width="9" height="30" rx="4.5" fill="#7a45e5"/>
+          <circle cx="27" cy="81" r="5.5" fill="#f6d7bd"/>
+          <path class="ht" d="M112 86 C94 76 96 60 104 60 C109 60 112 64 112 66 C112 64 115 60 120 60 C128 60 130 76 112 86 Z" fill="#7a45e5"/>
+          <circle cx="112" cy="86" r="5.5" fill="#f6d7bd"/>
+        </g>
+        <path d="M50 30 C54 24 60 21 66 20" fill="none" stroke="#4a3a70" stroke-width="2" stroke-linecap="round"/>
+        <path d="M90 30 C86 24 80 21 76 20" fill="none" stroke="#4a3a70" stroke-width="2" stroke-linecap="round"/>
+        <rect x="62" y="94" width="16" height="15" rx="5" fill="#8f61ee"/>
+        <path d="M54 63 q4.5 -5.5 9 0" fill="none" stroke="#221636" stroke-width="3" stroke-linecap="round"/>
+        <path d="M77 63 q4.5 -5.5 9 0" fill="none" stroke="#221636" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="51" cy="71" r="4.5" fill="#f5a3c7"/>
+        <circle cx="89" cy="71" r="4.5" fill="#f5a3c7"/>
+        <path d="M63 71 q7 8 14 0 z" fill="#221636"/>
+      </svg>
+      <span class="sj"></span>
+    </div>
+    <h1>그럴 줄 알았어 😆</h1>
+    <div class="letter">
+      <p>오늘 얼굴 보고 놀아야 하는데 미안행</p>
+      <p>다음에 내가 살테니까<br>소주랑 맛있는거 먹으러 가쟈!! 🍗</p>
+      <p>다음에 만나면 첫 잔은 내가 따라줄게.</p>
+      <p class="big">자기야, 앞으로도 잘 부탁해 💜</p>
+      <p class="sign">🤎🩵💙평생 연미편인 남자친구가❤️🧡💚</p>
+    </div>
+    <button id="more" class="b">한 잔 더! 짠 💜</button>
+    <button id="again">처음부터 다시 보기</button>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function show(n){
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('on'));
+  $('s' + n).classList.add('on');
+}
+
+/* 떨어지는 빼빼로 + 하트 + 소주 + 안주 */
+const emojis = ['💜','💜','🤍','💕','🍗','🥩','🍲','🍜','🥟','🍢'];
+const coats = ['#4a2a1a','#6b3f26','#9a6ff0'];
+function drop(){
+  if (reduce) return;
+  const e = document.createElement('span');
+  const k = Math.random();
+  if (k < 0.28){
+    e.className = 'pk';
+    e.style.setProperty('--c', coats[Math.floor(Math.random() * coats.length)]);
+  } else if (k < 0.5){
+    e.className = 'sj';
+    e.style.fontSize = (15 + Math.random() * 8) + 'px';
+  } else {
+    e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    e.style.fontSize = (18 + Math.random() * 20) + 'px';
+  }
+  e.style.setProperty('--a', Math.floor(Math.random() * 360) + 'deg');
+  e.style.left = Math.random() * 94 + 'vw';
+  e.style.animationDuration = (3 + Math.random() * 3) + 's';
+  e.addEventListener('animationend', () => e.remove());
+  $('fall').appendChild(e);
+}
+function burst(n){ for (let i = 0; i < n; i++) setTimeout(drop, i * 60); }
+
+/* 상자 열기 */
+$('box').addEventListener('click', () => {
+  if ($('box').classList.contains('open')) return;
+  $('box').classList.add('open');
+  burst(14);
+  setTimeout(() => show(2), 800);
+});
+
+/* 도망가는 "싫어" 버튼 */
+const teases = [
+  '어? 손이 미끄러졌나 봐 😏',
+  '안주는 자기가 고르게 해줄게 🍗',
+  '첫 잔은 내가 따라줄게 💜',
+  '못 잡을걸~ 🏃',
+  '이쯤 되면 "응" 누를 때 됐다 💕'
+];
+const no = $('no');
+let tries = 0, base = null, trail = null;
+
+function ghost(){
+  const g = no.getBoundingClientRect();
+  const c = document.createElement('span');
+  c.className = 'ghost';
+  c.textContent = '싫어';
+  c.style.left = g.left + 'px';
+  c.style.top = g.top + 'px';
+  c.style.width = g.width + 'px';
+  c.style.height = g.height + 'px';
+  c.addEventListener('animationend', () => c.remove());
+  document.body.appendChild(c);
+}
+
+function runAway(ev){
+  ev.preventDefault();
+  const r = no.getBoundingClientRect();
+  if (!base) base = { x: r.left, y: r.top };
+  const w = no.offsetWidth, h = no.offsetHeight;
+
+  const p = document.createElement('span');
+  p.className = 'puff';
+  p.textContent = '💨';
+  p.style.left = (r.left + w / 2 - 13) + 'px';
+  p.style.top = (r.top + h / 2 - 13) + 'px';
+  p.addEventListener('animationend', () => p.remove());
+  document.body.appendChild(p);
+
+  let x, y, d, k = 0;
+  do {
+    x = 12 + Math.random() * (innerWidth - w - 24);
+    y = 12 + Math.random() * (innerHeight - h - 24);
+    d = Math.hypot(x - r.left, y - r.top);
+    k++;
+  } while ((d < 130 || d > 300) && k < 40);
+  no.style.transform = 'translate(' + (x - base.x) + 'px,' + (y - base.y) + 'px)';
+
+  no.classList.remove('run');
+  void no.offsetWidth;
+  no.classList.add('run');
+
+  if (!reduce){
+    if (trail) clearInterval(trail);
+    let n = 0;
+    trail = setInterval(() => {
+      ghost();
+      if (++n >= 6){ clearInterval(trail); trail = null; }
+    }, 45);
+  }
+
+  $('tease').textContent = teases[tries % teases.length];
+  tries++;
+  $('yes').style.setProperty('--s', Math.min(1 + tries * 0.12, 1.6));
+}
+no.addEventListener('pointerdown', runAway);
+no.addEventListener('click', e => e.preventDefault());
+
+/* "응!" */
+function clink(){
+  const hero = $('hero');
+  hero.classList.remove('clink');
+  void hero.offsetWidth;
+  hero.classList.add('clink');
+}
+$('yes').addEventListener('click', () => {
+  show(3);
+  burst(45);
+  setTimeout(clink, 500);
+  if (!reduce) setInterval(drop, 400);
+});
+$('more').addEventListener('click', () => { clink(); burst(30); });
+$('again').addEventListener('click', () => location.reload());
+</script>
+</body>
+</html>
